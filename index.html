@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="styles.css">
+    <title>Fly Trip - Travel Booking</title>
+</head>
+<body>
+    <div class="container">
+        <h1>Book Your Trip</h1>
+        <form id="booking-form">
+            <label for="destination">Destination:</label>
+            <input type="text" id="destination" required>
+            <label for="date">Travel Date:</label>
+            <input type="date" id="date" required>
+            <label for="guests">Number of Guests:</label>
+            <input type="number" id="guests" min="1" required>
+            <button type="submit">Book Now</button>
+        </form>
+        <div id="booking-result"></div>
+    </div>
+    <script src="app.js"></script>
+</body>
+</html>
