@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fly Sky | Elite Visa Processing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+        :root {
+            --accent-blue: #3b82f6;
+            --deep-black: #0a0a0a;
+            --card-black: #171717;
+            --border-gray: #262626;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--deep-black);
+            color: #ffffff;
+            -webkit-tap-highlight-color: transparent;
+            scroll-behavior: smooth;
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* Auto-Hide Header Logic */
+        .glass-header {
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-gray);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+        }
+
+        .header-hidden {
+            transform: translateY(-100%);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .touch-press:active { transform: scale(0.97); transition: transform 0.1s; }
+
+        #mobileSidebar {
+            transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .overlay-active {
+            background: rgba(0,0,0,0.6);
+            backdrop-filter: blur(4px);
+        }
+
+        .social-circle {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: #171717;
+            border: 1px solid #262626;
+            transition: all 0.3s ease;
+        }
+
+        /* Padding to prevent hero content being hidden under fixed header */
+        .content-wrapper {
+            padding-top: 72px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Navigation (Auto-hides on scroll) -->
+    <header id="mainHeader" class="glass-header px-5 py-4 flex justify-between items-center z-50">
+        <div class="flex items-center space-x-3">
+            <button onclick="toggleMenu()" class="w-10 h-10 flex items-center justify-center rounded-full bg-zinc-900 border border-zinc-800 touch-press">
+                <i class="fas fa-bars text-zinc-400"></i>
+            </button>
+            <div class="flex flex-col">
+                <h1 class="text-xl font-extrabold tracking-tighter text-white">Fly Sky</h1>
+            </div>
+        </div>
+
+        <div class="flex items-center space-x-2">
+            <div class="relative">
+                <button onclick="toggleLang()" class="flex items-center space-x-1 px-3 py-2 rounded-full bg-zinc-900 border border-zinc-800 text-[10px] font-bold text-zinc-300">
+                    <span id="currentLang">EN</span>
+                    <i class="fas fa-chevron-down text-[8px]"></i>
+                </button>
+                <div id="langDropdown" class="hidden absolute right-0 mt-2 w-32 bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden shadow-2xl">
+                    <button onclick="setLang('en')" class="w-full text-left px-4 py-3 text-xs text-zinc-400 border-b border-zinc-800">English</button>
+                    <button onclick="setLang('zh')" class="w-full text-left px-4 py-3 text-xs text-zinc-400 border-b border-zinc-800">中文</button>
+                    <button onclick="setLang('vn')" class="w-full text-left px-4 py-3 text-xs text-zinc-400 border-b border-zinc-800">Tiếng Việt</button>
+                    <button onclick="setLang('bn')" class="w-full text-left px-4 py-3 text-xs text-zinc-400">বাংলা</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <div class="content-wrapper">
+        <!-- Sidebar Drawer -->
+        <div id="sidebarOverlay" onclick="toggleMenu()" class="fixed inset-0 bg-black/0 pointer-events-none transition-all duration-300 z-[60]"></div>
+        <div id="mobileSidebar" class="fixed top-0 left-0 h-full w-3/4 max-w-sm bg-zinc-950 z-[70] border-r border-zinc-800 -translate-x-full p-6">
+            <div class="flex justify-between items-center mb-10">
+                <span class="text-2xl font-black gradient-text">Fly Sky</span>
+                <button onclick="toggleMenu()" class="text-zinc-500"><i class="fas fa-times text-xl"></i></button>
+            </div>
+            <nav class="space-y-6">
+                <a href="#" class="flex items-center space-x-4 text-zinc-300 font-semibold" onclick="toggleMenu()"><i class="fas fa-home w-6"></i> <span data-key="menu-home">Home</span></a>
+                <a href="#visa-info" class="flex items-center space-x-4 text-zinc-300 font-semibold" onclick="toggleMenu()"><i class="fas fa-passport w-6"></i> <span data-key="menu-visa">Visa Pricing</span></a>
+                <a href="#news" class="flex items-center space-x-4 text-zinc-300 font-semibold" onclick="toggleMenu()"><i class="fas fa-newspaper w-6"></i> <span data-key="menu-news">Country News</span></a>
+                <a href="#" class="flex items-center space-x-4 text-zinc-300 font-semibold" onclick="toggleMenu()"><i class="fas fa-headset w-6"></i> <span data-key="menu-support">Support</span></a>
+            </nav>
+        </div>
+
+        <!-- Hero Section -->
+        <section class="p-5 mt-4">
+            <div class="bg-gradient-to-br from-zinc-900 to-black border border-zinc-800 rounded-[2.5rem] p-8 relative overflow-hidden">
+                <div class="relative z-10">
+                    <span class="text-blue-500 font-bold text-[10px] uppercase tracking-[0.3em] mb-2 block" data-key="hero-sub">Official Partner</span>
+                    <h2 class="text-3xl font-black leading-tight mb-4" data-key="hero-title">Premier Visa <br>Processing.</h2>
+                    <p class="text-zinc-500 text-sm leading-relaxed mb-6" data-key="hero-desc">Experience 24/7 dedicated support for Dubai, Europe, and Asia visa applications.</p>
+                    <button class="bg-blue-600 text-white px-8 py-4 rounded-2xl font-bold text-sm touch-press shadow-lg shadow-blue-900/20" data-key="btn-apply">Apply Now</button>
+                </div>
+                <div class="absolute -right-10 -bottom-10 opacity-10">
+                    <i class="fas fa-globe-asia text-[180px]"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- News Section -->
+        <section id="news" class="py-6">
+            <div class="px-5 flex justify-between items-center mb-4">
+                <h3 class="text-lg font-bold" data-key="title-news">Country News</h3>
+                <a href="#" class="text-blue-500 text-xs font-bold" data-key="view-all">View All</a>
+            </div>
+            <div class="flex overflow-x-auto space-x-4 px-5 no-scrollbar">
+                <div class="min-w-[280px] bg-zinc-900/50 border border-zinc-800 rounded-3xl p-4">
+                    <div class="h-40 bg-zinc-800 rounded-2xl mb-4 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=400&auto=format&fit=crop');"></div>
+                    <span class="text-blue-500 text-[10px] font-bold uppercase" data-key="news-dubai-tag">Dubai Update</span>
+                    <h4 class="text-sm font-bold mt-1 leading-snug" data-key="news-dubai-title">New 5-Year Multiple Entry Visa Policy Announced.</h4>
+                </div>
+                <div class="min-w-[280px] bg-zinc-900/50 border border-zinc-800 rounded-3xl p-4">
+                    <div class="h-40 bg-zinc-800 rounded-2xl mb-4 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1528127269322-539801943592?q=80&w=400&auto=format&fit=crop');"></div>
+                    <span class="text-emerald-500 text-[10px] font-bold uppercase" data-key="news-vn-tag">Vietnam</span>
+                    <h4 class="text-sm font-bold mt-1 leading-snug" data-key="news-vn-title">E-Visa Processing time reduced to 48 hours for 2026.</h4>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visa Pricing Section -->
+        <section id="visa-info" class="p-5">
+            <h3 class="text-lg font-bold mb-6" data-key="title-pricing">Visa Info & Pricing</h3>
+            <div class="space-y-4">
+                <!-- Dubai Card -->
+                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 relative overflow-hidden group">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h4 class="text-xl font-bold">Dubai (UAE)</h4>
+                            <p class="text-xs text-zinc-500" data-key="tourist-label">Tourist & Business Visa</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] text-zinc-500 uppercase font-bold" data-key="starts-from">Starts from</p>
+                            <p class="text-xl font-black text-blue-500">$120</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="text-xs text-zinc-400"><i class="fas fa-clock mr-2 text-blue-500"></i> 48 - 72 Hours</div>
+                        <div class="text-xs text-zinc-400"><i class="fas fa-check-circle mr-2 text-blue-500"></i> 99% Approval</div>
+                    </div>
+                    <button class="w-full bg-zinc-800 text-white py-3 rounded-xl font-bold text-xs touch-press group-hover:bg-blue-600 transition-colors" data-key="btn-select">Select Country</button>
+                </div>
+                <!-- Cambodia Card -->
+                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-6 relative">
+                    <div class="flex justify-between items-start mb-4">
+                        <div>
+                            <h4 class="text-xl font-bold">Cambodia</h4>
+                            <p class="text-xs text-zinc-500" data-key="evisa-label">E-Visa Processing</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[10px] text-zinc-500 uppercase font-bold" data-key="starts-from">Starts from</p>
+                            <p class="text-xl font-black text-blue-500">$45</p>
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="text-xs text-zinc-400"><i class="fas fa-clock mr-2 text-blue-500"></i> 24 Hours</div>
+                        <div class="text-xs text-zinc-400"><i class="fas fa-check-circle mr-2 text-blue-500"></i> Instant Grant</div>
+                    </div>
+                    <button class="w-full bg-zinc-800 text-white py-3 rounded-xl font-bold text-xs touch-press" data-key="btn-select">Select Country</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Footer -->
+        <footer class="bg-zinc-950 pt-16 pb-12 border-t border-zinc-900 mt-10">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                    <div class="text-center md:text-left">
+                        <h4 class="text-lg font-black text-blue-500 mb-4 tracking-tighter">FLY SKY TRAVELS</h4>
+                        <p class="text-sm text-zinc-400 leading-relaxed mb-8" data-key="footer-desc">
+                            Professional companionship in travel documentation. We bridge the distance between you and your destination with luxury service and total discretion.
+                        </p>
+                        <div class="flex justify-center md:justify-start gap-4">
+                            <a href="https://wa.me/" class="social-circle text-emerald-500 hover:bg-emerald-500/10"><i class="fab fa-whatsapp text-lg"></i></a>
+                            <a href="https://t.me/" class="social-circle text-sky-500 hover:bg-sky-500/10"><i class="fab fa-telegram-plane text-lg"></i></a>
+                            <a href="#" class="social-circle text-pink-500 hover:bg-pink-500/10"><i class="fab fa-instagram text-lg"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="text-center md:text-left">
+                        <h4 class="text-sm font-bold text-white uppercase tracking-widest mb-4" data-key="foot-info-title">Website Info</h4>
+                        <ul class="text-sm text-zinc-500 space-y-3">
+                            <li><span class="text-zinc-300">URL:</span> FlySkyVisas.com</li>
+                            <li><span class="text-zinc-300" data-key="foot-coverage">Coverage:</span> Dubai, Asia, Europe</li>
+                            <li><span class="text-zinc-300" data-key="foot-type">Type:</span> Outcall Visa Support</li>
+                            <li><span class="text-zinc-300" data-key="foot-status">Status:</span> 24/7 Verified Agency</li>
+                        </ul>
+                    </div>
+
+                    <div class="text-center md:text-left">
+                        <h4 class="text-sm font-bold text-white uppercase tracking-widest mb-4" data-key="foot-contact-title">Contact Suite</h4>
+                        <div class="flex flex-col gap-4 text-xs font-semibold text-zinc-400 uppercase">
+                            <div class="flex items-center justify-center md:justify-start gap-3">
+                                <i class="fab fa-whatsapp text-green-500 text-lg"></i> +971 50 FLY SKY
+                            </div>
+                            <div class="flex items-center justify-center md:justify-start gap-3">
+                                <i class="fab fa-telegram text-sky-500 text-lg"></i> @FlySkySupport
+                            </div>
+                            <div class="flex items-center justify-center md:justify-start gap-3">
+                                <i class="fab fa-weixin text-green-400 text-lg"></i> FlySky_Asia
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-8 border-t border-zinc-900 text-center">
+                    <p class="text-[9px] text-zinc-600 uppercase tracking-widest mb-2" data-key="foot-note">International Travel Documentation Specialists • 18+</p>
+                    <p class="text-[10px] text-zinc-400">© 2026 FlySkyVisas.com. All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <script>
+        const translations = {
+            en: {
+                "menu-home": "Home", "menu-visa": "Visa Pricing", "menu-news": "Country News", "menu-support": "Support",
+                "hero-sub": "Official Partner", "hero-title": "Premier Visa Processing.", "hero-desc": "Experience 24/7 dedicated support for Dubai, Europe, and Asia visa applications.",
+                "btn-apply": "Apply Now", "title-news": "Country News", "view-all": "View All", "news-dubai-tag": "Dubai Update",
+                "news-dubai-title": "New 5-Year Multiple Entry Visa Policy Announced.", "news-vn-tag": "Vietnam",
+                "news-vn-title": "E-Visa Processing time reduced to 48 hours for 2026.", "title-pricing": "Visa Info & Pricing",
+                "tourist-label": "Tourist & Business Visa", "starts-from": "Starts from", "btn-select": "Select Country", "evisa-label": "E-Visa Processing",
+                "footer-desc": "Professional companionship in travel documentation. We bridge the distance between you and your destination with luxury service and total discretion.",
+                "foot-info-title": "Website Info", "foot-coverage": "Coverage", "foot-type": "Type", "foot-status": "Status",
+                "foot-contact-title": "Contact Suite", "foot-note": "International Travel Documentation Specialists • 18+"
+            },
+            zh: {
+                "menu-home": "首页", "menu-visa": "签证价格", "menu-news": "各国动态", "menu-support": "客服支持",
+                "hero-sub": "官方合作伙伴", "hero-title": "卓越签证办理", "hero-desc": "为您提供迪拜、欧洲及亚洲签证申请的24/7全天候专属支持。",
+                "btn-apply": "立即申请", "title-news": "各国动态", "view-all": "查看全部", "news-dubai-tag": "迪拜更新",
+                "news-dubai-title": "政府宣布新的5年多次入境签证政策。", "news-vn-tag": "越南",
+                "news-vn-title": "2026年电子签证处理时间缩短至48小时。", "title-pricing": "签证信息与价格",
+                "tourist-label": "旅游与商务签证", "starts-from": "起价", "btn-select": "选择国家", "evisa-label": "电子签证办理",
+                "footer-desc": "专业的旅行证件伴侣。我们以卓越的服务和绝对的保密性，为您缩短通往目的地的距离。",
+                "foot-info-title": "网站信息", "foot-coverage": "覆盖区域", "foot-type": "类型", "foot-status": "状态",
+                "foot-contact-title": "联系方式", "foot-note": "国际旅行证件专家 • 需满18岁"
+            },
+            vn: {
+                "menu-home": "Trang chủ", "menu-visa": "Giá Visa", "menu-news": "Tin tức", "menu-support": "Hỗ trợ",
+                "hero-sub": "Đối tác chính thức", "hero-title": "Xử lý Visa hàng đầu.", "hero-desc": "Trải nghiệm hỗ trợ tận tâm 24/7 cho các hồ sơ visa Dubai, Châu Âu và Châu Á.",
+                "btn-apply": "Nộp đơn ngay", "title-news": "Tin tức quốc gia", "view-all": "Xem tất cả", "news-dubai-tag": "Cập nhật Dubai",
+                "news-dubai-title": "Chính sách Visa nhập cảnh nhiều lần 5 năm mới được công bố.", "news-vn-tag": "Việt Nam",
+                "news-vn-title": "Thời gian xử lý E-Visa giảm xuống còn 48 giờ vào năm 2026.", "title-pricing": "Thông tin & Giá cả",
+                "tourist-label": "Visa Du lịch & Công tác", "starts-from": "Giá từ", "btn-select": "Chọn quốc gia", "evisa-label": "Xử lý E-Visa",
+                "footer-desc": "Chuyên gia hỗ trợ hồ sơ du lịch chuyên nghiệp. Chúng tôi rút ngắn khoảng cách giữa bạn và điểm đến bằng dịch vụ cao cấp và sự bảo mật tuyệt đối.",
+                "foot-info-title": "Thông tin Web", "foot-coverage": "Phạm vi", "foot-type": "Loại hình", "foot-status": "Trạng thái",
+                "foot-contact-title": "Bộ phận liên hệ", "foot-note": "Chuyên gia Hồ sơ Du lịch Quốc tế • 18+"
+            },
+            bn: {
+                "menu-home": "হোম", "menu-visa": "ভিসা মূল্য", "menu-news": "খবর", "menu-support": "সাপোর্ট",
+                "hero-sub": "অফিসিয়াল পার্টনার", "hero-title": "প্রিমিয়ার ভিসা প্রসেসিং।", "hero-desc": "দুবাই, ইউরোপ এবং এশিয়া ভিসা আবেদনের জন্য ২৪/৭ ডেডিকেটেড সাপোর্ট পান।",
+                "btn-apply": "আবেদন করুন", "title-news": "দেশের খবর", "view-all": "সব দেখুন", "news-dubai-tag": "দুবাই আপডেট",
+                "news-dubai-title": "নতুন ৫ বছরের মাল্টিপল এন্ট্রি ভিসা নীতি ঘোষণা করা হয়েছে।", "news-vn-tag": "ভিয়েতনাম",
+                "news-vn-title": "২০২৬ সালের জন্য ই-ভিসা প্রসেসিং সময় ৪৮ ঘণ্টায় নামিয়ে আনা হয়েছে।", "title-pricing": "ভিসা তথ্য ও মূল্য",
+                "tourist-label": "ট্যুরিস্ট ও বিজনেস ভিসা", "starts-from": "শুরু", "btn-select": "দেশ নির্বাচন", "evisa-label": "ই-ভিসা প্রসেসিং",
+                "footer-desc": "ভ্রমণ নথিপত্রে পেশাদার সহযোগিতা। আমরা বিলাসবহুল পরিষেবা এবং গোপনীয়তার সাথে আপনার গন্তব্যের দূরত্ব কমিয়ে আনি।",
+                "foot-info-title": "ওয়েবসাইট তথ্য", "foot-coverage": "কভারেজ", "foot-type": "ধরন", "foot-status": "অবস্থা",
+                "foot-contact-title": "যোগাযোগ", "foot-note": "আন্তর্জাতিক ভ্রমণ নথি বিশেষজ্ঞ • ১৮+"
+            }
+        };
+
+        // Scroll Logic for Hiding Header completely while using the page
+        let lastScrollY = window.scrollY;
+        const header = document.getElementById('mainHeader');
+
+        window.addEventListener('scroll', () => {
+            const currentScrollY = window.scrollY;
+            if (currentScrollY > lastScrollY && currentScrollY > 72) {
+                // Scrolling Down -> Hide Header
+                header.classList.add('header-hidden');
+            } else {
+                // Scrolling Up -> Show Header
+                header.classList.remove('header-hidden');
+            }
+            lastScrollY = currentScrollY;
+        });
+
+        function toggleMenu() {
+            const sidebar = document.getElementById('mobileSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            if (sidebar.classList.contains('-translate-x-full')) {
+                sidebar.classList.remove('-translate-x-full');
+                overlay.classList.replace('bg-black/0', 'bg-black/60');
+                overlay.classList.add('pointer-events-auto');
+            } else {
+                sidebar.classList.add('-translate-x-full');
+                overlay.classList.replace('bg-black/60', 'bg-black/0');
+                overlay.classList.remove('pointer-events-auto');
+            }
+        }
+
+        function toggleLang() {
+            document.getElementById('langDropdown').classList.toggle('hidden');
+        }
+
+        function setLang(lang) {
+            const data = translations[lang];
+            Object.keys(data).forEach(key => {
+                const els = document.querySelectorAll(`[data-key="${key}"]`);
+                els.forEach(el => el.textContent = data[key]);
+            });
+            document.getElementById('currentLang').textContent = lang === 'zh' ? '中文' : lang.toUpperCase();
+            document.getElementById('langDropdown').classList.add('hidden');
+            document.documentElement.lang = lang;
+        }
+
+        window.onclick = function(event) {
+            if (!event.target.closest('.relative') && !event.target.closest('#mobileSidebar')) {
+                document.getElementById('langDropdown').classList.add('hidden');
+            }
+        }
+
+        window.onload = () => setLang('en');
+    </script>
+</body>
+</html>
+
