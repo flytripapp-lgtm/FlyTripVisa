@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Fly Sky Travels | Elite Visa Processing</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+
+        :root {
+            --accent-blue: #3b82f6;
+            --deep-black: #0a0a0a;
+            --card-black: #171717;
+            --border-gray: #262626;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--deep-black);
+            color: #ffffff;
+            -webkit-tap-highlight-color: transparent;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        .no-scrollbar::-webkit-scrollbar { display: none; }
+        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .glass-header {
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(12px);
+            border-bottom: 1px solid var(--border-gray);
+            transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: fixed;
+            top: 0; left: 0; right: 0;
+            z-index: 100;
+        }
+
+        /* Class to hide the navigation bar */
+        .header-hidden {
+            transform: translateY(-100%);
+        }
+
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa 0%, #2563eb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .touch-press:active { transform: scale(0.96); transition: transform 0.1s; }
+
+        .system-view {
+            position: fixed;
+            inset: 0;
+            background: var(--deep-black);
+            z-index: 200;
+            display: none;
+            overflow-y: auto;
+            padding-bottom: 40px;
+        }
+
+        .content-wrapper { padding-top: 72px; }
+        
+        .step-pill {
+            background: #141414;
+            border: 1px solid #222;
+            border-radius: 12px;
+            padding: 14px;
+            margin-bottom: 10px;
+        }
+
+        .btn-sm {
+            padding: 10px 20px;
+            font-size: 12px;
+            border-radius: 10px;
+        }
+
+        .social-circle {
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--border-gray);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Main Header -->
+    <header id="mainHeader" class="glass-header px-5 py-3 flex justify-between items-center">
+        <div id="headerLeft" class="flex items-center space-x-3">
+            <button onclick="toggleMenu()" class="w-9 h-9 flex items-center justify-center rounded-full bg-zinc-900 border border-zinc-800 touch-press">
+                <i class="fas fa-bars text-zinc-400 text-sm"></i>
+            </button>
+            <h1 class="text-lg font-black tracking-tighter text-white">Fly Sky Travels</h1>
+        </div>
+
+        <div class="relative">
+            <button onclick="toggleLang()" class="flex items-center space-x-2 px-3 py-1.5 rounded-full bg-zinc-900 border border-zinc-800 text-[10px] font-bold text-zinc-300 touch-press">
+                <i class="fas fa-globe text-blue-500"></i>
+                <span id="currentLangDisplay">EN</span>
+            </button>
+            <div id="langDropdown" class="hidden absolute right-0 mt-2 w-32 bg-zinc-900 border border-zinc-800 rounded-xl overflow-hidden shadow-2xl z-[110]">
+                <button onclick="setLang('en')" class="w-full text-left px-4 py-2 text-[11px] text-zinc-400 border-b border-zinc-800 hover:bg-zinc-800">English</button>
+                <button onclick="setLang('zh')" class="w-full text-left px-4 py-2 text-[11px] text-zinc-400 border-b border-zinc-800 hover:bg-zinc-800">中文</button>
+                <button onclick="setLang('vn')" class="w-full text-left px-4 py-2 text-[11px] text-zinc-400 border-b border-zinc-800 hover:bg-zinc-800">Tiếng Việt</button>
+                <button onclick="setLang('bn')" class="w-full text-left px-4 py-2 text-[11px] text-zinc-400 hover:bg-zinc-800">বাংলা</button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Menu -->
+    <div id="sidebarOverlay" onclick="toggleMenu()" class="fixed inset-0 bg-black/0 pointer-events-none transition-all duration-300 z-[150]"></div>
+    <div id="mobileSidebar" class="fixed top-0 left-0 h-full w-3/4 max-w-xs bg-zinc-950 z-[160] border-r border-zinc-800 -translate-x-full p-6 flex flex-col">
+        <div class="flex justify-between items-center mb-8">
+            <span class="text-xl font-black gradient-text">Fly Sky Travels</span>
+            <button onclick="toggleMenu()" class="text-zinc-500"><i class="fas fa-times"></i></button>
+        </div>
+        
+        <nav class="space-y-5 flex-grow">
+            <a href="#" class="flex items-center space-x-4 text-zinc-300 text-sm font-semibold" onclick="toggleMenu()"><i class="fas fa-home w-5 text-blue-500"></i> <span data-key="menu-home">Home</span></a>
+            <a href="#visa-info" class="flex items-center space-x-4 text-zinc-300 text-sm font-semibold" onclick="toggleMenu()"><i class="fas fa-passport w-5 text-blue-500"></i> <span data-key="menu-visa">Visa Pricing</span></a>
+            <a href="#news" class="flex items-center space-x-4 text-zinc-300 text-sm font-semibold" onclick="toggleMenu()"><i class="fas fa-newspaper w-5 text-blue-500"></i> <span data-key="menu-news">News</span></a>
+            <a href="https://wa.me/60109654305" class="flex items-center space-x-4 text-zinc-300 text-sm font-semibold"><i class="fas fa-headset w-5 text-blue-500"></i> <span data-key="menu-support">Support</span></a>
+        </nav>
+
+        <div class="mt-auto pt-6 border-t border-zinc-900">
+            <p class="text-[9px] font-bold text-zinc-500 uppercase tracking-widest mb-3" data-key="select-lang">Language</p>
+            <div class="flex gap-2">
+                <button onclick="setLang('en')" class="flex-1 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-[10px] font-bold">EN</button>
+                <button onclick="setLang('zh')" class="flex-1 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-[10px] font-bold">中文</button>
+                <button onclick="setLang('vn')" class="flex-1 py-2 rounded-lg bg-zinc-900 border border-zinc-800 text-[10px] font-bold">VN</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="content-wrapper">
+        <!-- Hero Section -->
+        <section class="px-5 py-2">
+            <div class="bg-gradient-to-br from-zinc-900 to-black border border-zinc-800 rounded-[2rem] p-6 relative overflow-hidden">
+                <div class="relative z-10">
+                    <span class="text-blue-500 font-bold text-[9px] uppercase tracking-widest mb-1 block">Fly Sky Travels Premium</span>
+                    <h2 class="text-2xl font-black leading-tight mb-3" data-key="hero-title">Premier Visa <br>Processing.</h2>
+                    <p class="text-zinc-500 text-xs leading-relaxed mb-5 max-w-[80%]" data-key="hero-desc">Global visa solutions for Dubai, Europe, and Asia with 24/7 dedicated desk.</p>
+                    <button onclick="document.getElementById('visa-info').scrollIntoView({behavior: 'smooth'})" class="bg-blue-600 text-white btn-sm font-bold touch-press" data-key="btn-apply">Apply Now</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- News Section -->
+        <section id="news" class="py-6">
+            <div class="px-5 flex justify-between items-center mb-4">
+                <h3 class="text-md font-bold" data-key="title-news">Global Travel News</h3>
+                <span class="text-blue-500 text-[10px] font-bold uppercase" data-key="view-all">Latest</span>
+            </div>
+            <div class="flex overflow-x-auto space-x-4 px-5 no-scrollbar">
+                <div class="min-w-[240px] bg-zinc-900 border border-zinc-800 rounded-2xl p-3">
+                    <div class="h-32 bg-zinc-800 rounded-xl mb-3 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=400');"></div>
+                    <span class="text-blue-500 text-[9px] font-bold uppercase">Dubai</span>
+                    <h4 class="text-[11px] font-bold mt-1" data-key="news-1">New 5-Year Multiple Entry Visa Policy.</h4>
+                </div>
+                <div class="min-w-[240px] bg-zinc-900 border border-zinc-800 rounded-2xl p-3">
+                    <div class="h-32 bg-zinc-800 rounded-xl mb-3 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1467269204594-9661b134dd2b?q=80&w=400');"></div>
+                    <span class="text-emerald-500 text-[9px] font-bold uppercase">Europe</span>
+                    <h4 class="text-[11px] font-bold mt-1" data-key="news-2">Schengen Area digital visa trials in 2026.</h4>
+                </div>
+                <div class="min-w-[240px] bg-zinc-900 border border-zinc-800 rounded-2xl p-3">
+                    <div class="h-32 bg-zinc-800 rounded-xl mb-3 bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1535131749006-b7f58c99034b?q=80&w=400');"></div>
+                    <span class="text-orange-500 text-[9px] font-bold uppercase">Thailand</span>
+                    <h4 class="text-[11px] font-bold mt-1" data-key="news-3">Extended stay for remote workers launched.</h4>
+                </div>
+            </div>
+        </section>
+
+        <!-- Visa Pricing Section -->
+        <section id="visa-info" class="p-5">
+            <h3 class="text-md font-bold mb-5" data-key="title-pricing">Visa Info & Pricing</h3>
+            <div class="grid grid-cols-1 gap-4">
+                <!-- Dubai -->
+                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden touch-press flex flex-col" onclick="openVisaSystem('Dubai')">
+                    <div class="h-40 w-full bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=600');"></div>
+                    <div class="p-5 flex justify-between items-center">
+                        <div>
+                            <h4 class="text-lg font-black uppercase tracking-tight">Dubai (UAE)</h4>
+                            <p class="text-[10px] text-zinc-500 font-bold" data-key="tourist-label">Premium Processing</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[16px] font-black text-blue-500">$120</p>
+                            <button class="bg-blue-600/10 text-blue-500 text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter" data-key="btn-select">Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Cambodia -->
+                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden touch-press flex flex-col" onclick="openVisaSystem('Cambodia')">
+                    <div class="h-40 w-full bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1500049633910-bb20e5ce962a?q=80&w=600');"></div>
+                    <div class="p-5 flex justify-between items-center">
+                        <div>
+                            <h4 class="text-lg font-black uppercase tracking-tight">Cambodia</h4>
+                            <p class="text-[10px] text-zinc-500 font-bold" data-key="evisa-label">E-Visa Express</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[16px] font-black text-blue-500">$45</p>
+                            <button class="bg-blue-600/10 text-blue-500 text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter" data-key="btn-select">Details</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Singapore -->
+                <div class="bg-zinc-900 border border-zinc-800 rounded-3xl overflow-hidden touch-press flex flex-col" onclick="openVisaSystem('Singapore')">
+                    <div class="h-40 w-full bg-cover bg-center" style="background-image: url('https://images.unsplash.com/photo-1525625232214-995c98bb5cf4?q=80&w=600');"></div>
+                    <div class="p-5 flex justify-between items-center">
+                        <div>
+                            <h4 class="text-lg font-black uppercase tracking-tight">Singapore</h4>
+                            <p class="text-[10px] text-zinc-500 font-bold" data-key="tourist-label">Tourist Visa</p>
+                        </div>
+                        <div class="text-right">
+                            <p class="text-[16px] font-black text-blue-500">$65</p>
+                            <button class="bg-blue-600/10 text-blue-500 text-[9px] font-bold px-3 py-1 rounded-full uppercase tracking-tighter" data-key="btn-select">Details</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Detailed Footer -->
+        <footer class="bg-zinc-950 pt-16 pb-12 border-t border-zinc-900 mt-10">
+            <div class="max-w-7xl mx-auto px-6">
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12">
+                    <div class="text-center md:text-left">
+                        <h4 class="text-lg font-black text-blue-500 mb-4 tracking-tighter">FLY SKY TRAVELS</h4>
+                        <p class="text-sm text-zinc-400 leading-relaxed mb-8" data-key="footer-desc">
+                            Professional companionship in travel documentation. We bridge the distance between you and your destination with luxury service and total discretion.
+                        </p>
+                        <div class="flex justify-center md:justify-start gap-4">
+                            <a href="https://wa.me/60109654305" class="social-circle text-emerald-500 hover:bg-emerald-500/10"><i class="fab fa-whatsapp text-lg"></i></a>
+                            <a href="https://t.me/FlySkySupport" class="social-circle text-sky-500 hover:bg-sky-500/10"><i class="fab fa-telegram-plane text-lg"></i></a>
+                            <a href="#" class="social-circle text-pink-500 hover:bg-pink-500/10"><i class="fab fa-instagram text-lg"></i></a>
+                        </div>
+                    </div>
+
+                    <div class="text-center md:text-left">
+                        <h4 class="text-sm font-bold text-white uppercase tracking-widest mb-4" data-key="foot-info-title">Website Info</h4>
+                        <ul class="text-sm text-zinc-500 space-y-3">
+                            <li><span class="text-zinc-300">URL:</span> FlySkyVisas.com</li>
+                            <li><span class="text-zinc-300" data-key="foot-coverage">Coverage:</span> Dubai, Asia, Europe</li>
+                            <li><span class="text-zinc-300" data-key="foot-type">Type:</span> Outcall Visa Support</li>
+                            <li><span class="text-zinc-300" data-key="foot-status">Status:</span> 24/7 Verified Agency</li>
+                        </ul>
+                    </div>
+
+                    <div class="text-center md:text-left">
+                        <h4 class="text-sm font-bold text-white uppercase tracking-widest mb-4" data-key="foot-contact-title">Contact Suite</h4>
+                        <div class="flex flex-col gap-4 text-xs font-semibold text-zinc-400 uppercase">
+                            <div class="flex items-center justify-center md:justify-start gap-3">
+                                <i class="fab fa-whatsapp text-green-500 text-lg"></i> +971 50 FLY SKY
+                            </div>
+                            <div class="flex items-center justify-center md:justify-start gap-3">
+                                <i class="fab fa-telegram text-sky-500 text-lg"></i> @FlySkySupport
+                            </div>
+                            <div class="flex items-center justify-center md:justify-start gap-3">
+                                <i class="fab fa-weixin text-green-400 text-lg"></i> FlySky_Asia
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="pt-8 border-t border-zinc-900 text-center">
+                    <p class="text-[9px] text-zinc-600 uppercase tracking-widest mb-2" data-key="foot-note">International Travel Documentation Specialists • 18+</p>
+                    <p class="text-[10px] text-zinc-400">© 2026 FlySkyVisas.com. All Rights Reserved.</p>
+                </div>
+            </div>
+        </footer>
+    </div>
+
+    <!-- Application Modal -->
+    <div id="visaSystem" class="system-view">
+        <div class="sticky top-0 bg-zinc-950/90 backdrop-blur-xl border-b border-zinc-800 p-4 flex justify-between items-center z-10">
+            <h2 id="sysCountryName" class="text-lg font-black">Visa Process</h2>
+            <button onclick="closeVisaSystem()" class="w-8 h-8 bg-zinc-900 rounded-full flex items-center justify-center text-xs"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="p-6">
+            <div id="modalHeroImage" class="h-48 rounded-3xl bg-cover bg-center mb-6 shadow-2xl border border-zinc-800"></div>
+            <p id="modalCountryDesc" class="text-xs text-zinc-400 leading-relaxed mb-6"></p>
+            <div id="processContent"></div>
+            <div class="mt-8 space-y-3">
+                <button onclick="showPayment()" class="w-full bg-blue-600 text-white btn-sm font-bold touch-press" data-key="btn-apply-pay">Apply & Pay Online</button>
+                <a id="whatsappTrial" href="#" class="w-full bg-emerald-600 text-white btn-sm font-bold flex items-center justify-center gap-2 touch-press">
+                    <i class="fab fa-whatsapp"></i> <span data-key="btn-trial">Request Trial</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Payment Overlay -->
+    <div id="paymentView" class="fixed inset-0 bg-zinc-950 z-[300] hidden flex flex-col p-6">
+        <div class="flex justify-between items-center mb-6">
+            <h2 class="text-xl font-black" data-key="secure-pay-title">Secure Payment</h2>
+            <button onclick="closePayment()" class="text-zinc-500"><i class="fas fa-times text-xl"></i></button>
+        </div>
+        <div class="bg-zinc-900 border border-zinc-800 rounded-2xl p-5 mb-6">
+            <div class="flex justify-between mb-2">
+                <span class="text-[10px] text-zinc-400" data-key="pay-visa-label">Visa</span>
+                <span id="payVisaType" class="text-[10px] font-bold">Dubai</span>
+            </div>
+            <div class="flex justify-between items-center">
+                <span class="text-sm font-bold" data-key="pay-total-label">Total</span>
+                <span id="payTotal" class="text-lg font-black text-blue-500"></span>
+            </div>
+        </div>
+        <div class="space-y-3">
+            <input type="text" data-placeholder="holder-name" placeholder="Name" class="w-full bg-zinc-900 border border-zinc-800 p-3 rounded-xl text-xs">
+            <input type="text" data-placeholder="card-num" placeholder="Card Number" class="w-full bg-zinc-900 border border-zinc-800 p-3 rounded-xl text-xs">
+            <button onclick="completePayment()" class="w-full bg-blue-600 text-white py-3 rounded-xl font-bold text-xs mt-2" data-key="btn-pay-secure">Pay Now</button>
+        </div>
+    </div>
+
+    <script>
+        const translations = {
+            en: {
+                "menu-home": "Home", "menu-visa": "Visa Pricing", "menu-news": "News", "menu-support": "Support",
+                "hero-title": "Premier Visa Processing.", "hero-desc": "Global visa solutions for Dubai, Europe, and Asia with 24/7 dedicated desk.",
+                "btn-apply": "Apply Now", "title-news": "Global Travel News", "title-pricing": "Visa Info & Pricing",
+                "tourist-label": "Premium Processing", "btn-select": "Details", "evisa-label": "E-Visa Express",
+                "footer-desc": "Professional companionship in travel documentation. We bridge the distance between you and your destination with luxury service and total discretion.",
+                "btn-trial": "Contact WhatsApp", "btn-apply-pay": "Apply & Pay Online", "secure-pay-title": "Secure Payment", 
+                "pay-visa-label": "Visa Type", "pay-total-label": "Total Amount", "btn-pay-secure": "Pay Securely Now", 
+                "holder-name": "Name on Card", "card-num": "Card Number", "select-lang": "Language", 
+                "app-process": "Appreciation Process", "req-docs": "Requirements:", "view-all": "Latest",
+                "news-1": "New 5-Year Multiple Entry Visa Policy.", "news-2": "Schengen digital visa trials in 2026.", 
+                "news-3": "Thailand extended stay launched.", "foot-info-title": "Website Info",
+                "foot-coverage": "Coverage:", "foot-type": "Type:", "foot-status": "Status:",
+                "foot-contact-title": "Contact Suite", "foot-note": "International Travel Documentation Specialists • 18+"
+            },
+            zh: {
+                "menu-home": "首页", "menu-visa": "签证价格", "menu-news": "新闻", "menu-support": "支持",
+                "hero-title": "卓越签证办理", "hero-desc": "迪拜、欧洲及亚洲全球签证方案，24/7 专属客服。",
+                "btn-apply": "立即申请", "title-news": "全球旅行新闻", "title-pricing": "签证信息与价格",
+                "tourist-label": "高级办理服务", "btn-select": "详情", "evisa-label": "电子签证速办",
+                "footer-desc": "专业的旅行证件伴侣。我们以卓越的服务和绝对的保密性，为您缩短通往目的地的距离。",
+                "btn-trial": "联系微信客服", "btn-apply-pay": "在线申请并支付", "secure-pay-title": "安全支付", 
+                "pay-visa-label": "签证类型", "pay-total-label": "总额", "btn-pay-secure": "立即安全支付", 
+                "holder-name": "持卡人姓名", "card-num": "卡号", "select-lang": "选择语言", 
+                "app-process": "申请/评估流程", "req-docs": "所需材料:", "view-all": "最新",
+                "news-1": "迪拜公布 5 年多次入境政策。", "news-2": "申根签证 2026 年数字化试点。", 
+                "news-3": "泰国启动长期居留计划。", "foot-info-title": "网站信息",
+                "foot-coverage": "覆盖范围:", "foot-type": "类型:", "foot-status": "状态:",
+                "foot-contact-title": "联系中心", "foot-note": "国际旅行证件专家 • 18+"
+            },
+            vn: {
+                "menu-home": "Trang chủ", "menu-visa": "Giá Visa", "menu-news": "Tin tức", "menu-support": "Hỗ trợ",
+                "hero-title": "Xử lý Visa Cao cấp.", "hero-desc": "Giải pháp visa toàn cầu cho Dubai, Châu Âu và Châu Á 24/7.",
+                "btn-apply": "Nộp đơn", "title-news": "Tin tức Du lịch", "title-pricing": "Thông tin & Giá",
+                "tourist-label": "Xử lý Cao cấp", "btn-select": "Chi tiết", "evisa-label": "E-Visa Siêu tốc",
+                "footer-desc": "Người bạn đồng hành chuyên nghiệp trong hồ sơ du lịch. Chúng tôi rút ngắn khoảng cách với dịch vụ sang trọng và sự riêng tư tuyệt đối.",
+                "btn-trial": "Liên hệ WhatsApp", "btn-apply-pay": "Đăng ký & Thanh toán", "secure-pay-title": "Thanh toán", 
+                "pay-visa-label": "Loại Visa", "pay-total-label": "Tổng tiền", "btn-pay-secure": "Thanh toán ngay", 
+                "holder-name": "Tên chủ thẻ", "card-num": "Số thẻ", "select-lang": "Ngôn ngữ", 
+                "app-process": "Quy trình Thẩm định", "req-docs": "Yêu cầu:", "view-all": "Mới nhất",
+                "news-1": "Dubai công bố visa 5 năm mới.", "news-2": "Thử nghiệm visa Schengen số 2026.", 
+                "news-3": "Thái Lan ra mắt visa lưu trú dài.", "foot-info-title": "Thông tin Website",
+                "foot-coverage": "Phạm vi:", "foot-type": "Loại hình:", "foot-status": "Trạng thái:",
+                "foot-contact-title": "Liên hệ", "foot-note": "Chuyên gia Hồ sơ Du lịch Quốc tế • 18+"
+            },
+            bn: {
+                "menu-home": "হোম", "menu-visa": "ভিসা মূল্য", "menu-news": "খবর", "menu-support": "সাপোর্ট",
+                "hero-title": "প্রিমিয়ার ভিসা প্রসেসিং।", "hero-desc": "দুবাই, ইউরোপ ও এশিয়ার গ্লোবাল ভিসা সমাধান ২৪/৭ সাপোর্ট সহ।",
+                "btn-apply": "আবেদন করুন", "title-news": "ভ্রমণ খবর", "title-pricing": "ভিসা তথ্য ও মূল্য",
+                "tourist-label": "প্রিমিয়াম প্রসেসিং", "btn-select": "বিস্তারিত", "evisa-label": "ই-ভিসা এক্সপ্রেস",
+                "footer-desc": "ভ্রমণ নথিপত্রে পেশাদার সহযোগিতা। আমরা আপনার গন্তব্যের দূরত্ব কমিয়ে আনি বিলাসিতা ও গোপনীয়তার সাথে।",
+                "btn-trial": "হোয়াটসঅ্যাপ যোগাযোগ", "btn-apply-pay": "আবেদন ও পেমেন্ট", "secure-pay-title": "নিরাপদ পেমেন্ট", 
+                "pay-visa-label": "ভিসার ধরন", "pay-total-label": "মোট পরিমাণ", "btn-pay-secure": "পেমেন্ট করুন", 
+                "holder-name": "কার্ডের নাম", "card-num": "কার্ড নম্বর", "select-lang": "ভাষা", 
+                "app-process": "মূল্যায়ন প্রক্রিয়া", "req-docs": "প্রয়োজনীয়:", "view-all": "সর্বশেষ",
+                "news-1": "দুবাই ৫ বছরের মাল্টিপল ভিসা শুরু।", "news-2": "২০২৬-এ শেনজেন ডিজিটাল ভিসা শুরু।", 
+                "news-3": "থাইল্যান্ডে দীর্ঘকালীন থাকার সুবিধা।", "foot-info-title": "ওয়েবসাইট তথ্য",
+                "foot-coverage": "কভারেজ:", "foot-type": "ধরণ:", "foot-status": "স্ট্যাটাস:",
+                "foot-contact-title": "যোগাযোগ", "foot-note": "আন্তর্জাতিক ভ্রমণ নথি বিশেষজ্ঞ • ১৮+"
+            }
+        };
+
+        const visaData = {
+            "Dubai": { 
+                price: "$120", 
+                img: "https://images.unsplash.com/photo-1512453979798-5ea266f8880c?q=80&w=800",
+                desc: {
+                    en: "Expedited processing for UAE tourist and business visas. Includes mandatory medical insurance coverage.",
+                    zh: "阿联酋旅游和商务签证的加急办理。包括强制性医疗保险。",
+                    vn: "Xử lý nhanh cho visa du lịch và kinh doanh UAE. Bao gồm bảo hiểm y tế bắt buộc.",
+                    bn: "ইউএই ট্যুরিস্ট এবং বিজনেস ভিসার জন্য দ্রুত প্রসেসিং। বাধ্যতামূলক চিকিৎসা বীমা অন্তর্ভুক্ত।"
+                },
+                steps: { 
+                    en: ["Passport Color Scan", "Digital Photo", "Security Deposit"], 
+                    zh: ["护照扫描件", "电子照片", "保证金"], 
+                    vn: ["Quét hộ chiếu", "Ảnh số", "K্য্যুই"], 
+                    bn: ["পাসপোর্ট স্ক্যান", "ডিজিটাল ছবি", "আমানত"] 
+                } 
+            },
+            "Cambodia": { 
+                price: "$45", 
+                img: "https://images.unsplash.com/photo-1500049633910-bb20e5ce962a?q=80&w=800",
+                desc: {
+                    en: "Official government e-visa for single entry. Quick 3-day processing time.",
+                    zh: "官方政府电子签证，单次入境。快速 3 天办理时间。",
+                    vn: "E-visa chính thức của chính phủ cho nhập cảnh một lần. Thời gian xử lý nhanh trong 3 ngày.",
+                    bn: "একক প্রবেশের জন্য অফিসিয়াল সরকারি ই-ভিসা। দ্রুত ৩ দিনের প্রসেসিং সময়।"
+                },
+                steps: { 
+                    en: ["Passport Valid 6mo", "Recent Photo", "Email Address"], 
+                    zh: ["护照6个月有效", "近期照片", "电子邮箱"], 
+                    vn: ["Hộ chiếu hạn 6T", "Ảnh mới", "Email"], 
+                    bn: ["পাসপোর্ট ৬ মাস মেয়াদ", "ছবি", "ইমেল"] 
+                } 
+            },
+            "Singapore": { 
+                price: "$65", 
+                img: "https://images.unsplash.com/photo-1525625232214-995c98bb5cf4?q=80&w=800",
+                desc: {
+                    en: "Electronic Travel Authorization for international travelers. Priority queue assistance provided.",
+                    zh: "国际旅客的电子旅行授权。提供优先排队协助。",
+                    vn: "Ủy quyền du lịch điện tử cho du khách quốc tế. Cung cấp hỗ trợ ưu tiên.",
+                    bn: "আন্তর্জাতিক ভ্রমণকারীদের জন্য ইলেকট্রনিক ভ্রমণ অনুমোদন। অগ্রাধিকার সহায়তা প্রদান করা হয়।"
+                },
+                steps: { 
+                    en: ["Passport Bio-data", "Confirmed Ticket", "Hotel Voucher"], 
+                    zh: ["护照首页", "确认机票", "酒店确认单"], 
+                    vn: ["Hộ chiếu", "Vé bay", "Khách sạn"], 
+                    bn: ["পাসপোর্ট বায়ো-ডাটা", "টিকিট", "হোটেল ভাউচার"] 
+                } 
+            }
+        };
+
+        let currentLangCode = 'en';
+        let activeCountry = "Dubai";
+        let lastScrollTop = 0;
+
+        // Auto-hide entire navigation bar on scroll
+        window.addEventListener("scroll", function() {
+            let scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+            const mainHeader = document.getElementById('mainHeader');
+
+            if (scrollTop > lastScrollTop && scrollTop > 70) {
+                // Scrolling Down -> Hide Navigation Bar
+                mainHeader.classList.add('header-hidden');
+            } else {
+                // Scrolling Up -> Show Navigation Bar
+                mainHeader.classList.remove('header-hidden');
+            }
+            lastScrollTop = scrollTop <= 0 ? 0 : scrollTop;
+        }, false);
+
+        function setLang(lang) {
+            currentLangCode = lang;
+            const dict = translations[lang];
+            Object.keys(dict).forEach(key => {
+                const els = document.querySelectorAll(`[data-key="${key}"]`);
+                els.forEach(el => el.textContent = dict[key]);
+            });
+            document.querySelectorAll('[data-placeholder]').forEach(el => {
+                const key = el.getAttribute('data-placeholder');
+                if (dict[key]) el.placeholder = dict[key];
+            });
+            document.getElementById('currentLangDisplay').textContent = lang.toUpperCase();
+            document.getElementById('langDropdown').classList.add('hidden');
+            if (document.getElementById('visaSystem').style.display === 'block') openVisaSystem(activeCountry);
+        }
+
+        function toggleMenu() {
+            const sidebar = document.getElementById('mobileSidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('-translate-x-full');
+            overlay.classList.toggle('bg-black/60');
+            overlay.classList.toggle('pointer-events-none');
+        }
+
+        function toggleLang() { document.getElementById('langDropdown').classList.toggle('hidden'); }
+
+        function openVisaSystem(country) {
+            activeCountry = country;
+            const data = visaData[country];
+            const dict = translations[currentLangCode];
+            
+            document.getElementById('sysCountryName').innerText = country + " - " + dict['app-process'];
+            document.getElementById('modalHeroImage').style.backgroundImage = `url('${data.img}')`;
+            document.getElementById('modalCountryDesc').innerText = data.desc[currentLangCode];
+
+            let html = `<h4 class="text-xs font-bold mb-4 uppercase text-zinc-500 tracking-widest">${dict['req-docs']}</h4>`;
+            data.steps[currentLangCode].forEach((step, i) => {
+                html += `<div class="step-pill flex items-center gap-3">
+                            <span class="bg-blue-600 text-[9px] w-4 h-4 flex items-center justify-center rounded-full">${i+1}</span>
+                            <span class="text-xs font-medium">${step}</span>
+                        </div>`;
+            });
+            document.getElementById('processContent').innerHTML = html;
+            document.getElementById('visaSystem').style.display = 'block';
+            document.body.style.overflow = 'hidden';
+            document.getElementById('whatsappTrial').href = `https://wa.me/60109654305?text=Apply%20for%20${country}%20Visa%20at%20Fly%20Sky%20Travels`;
+        }
+
+        function closeVisaSystem() {
+            document.getElementById('visaSystem').style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+
+        function showPayment() {
+            const data = visaData[activeCountry];
+            document.getElementById('payVisaType').innerText = activeCountry;
+            document.getElementById('payTotal').innerText = data.price;
+            document.getElementById('paymentView').classList.remove('hidden');
+        }
+
+        function closePayment() { document.getElementById('paymentView').classList.add('hidden'); }
+        function completePayment() { 
+            const name = document.querySelector('[data-placeholder="holder-name"]').value;
+            if(!name) {
+                alert("Please enter card holder name");
+                return;
+            }
+            alert(`Processing payment for ${activeCountry} with Fly Sky Travels... Please wait.`); 
+            closePayment(); 
+        }
+
+        window.onload = () => setLang('en');
+    </script>
+</body>
+</html>
+
